@@ -152,6 +152,10 @@ MonoBehaviour:
   isOnGround: 1
   slidingPlayer: {fileID: 4156194254325953241}
   standingPlayer: {fileID: 5520388715812864868}
+  BulletR: {fileID: 2660835813608827863, guid: b62107e3edf8aeb4eba0cc653da50c6b, type: 3}
+  BulletL: {fileID: 2660835813608827863, guid: 78baec796638609469d974d3dd38f8f8, type: 3}
+  BulletPositionL: {x: -0.7, y: 1, z: 0}
+  BulletPositionR: {x: 0.7, y: 1, z: 0}
 --- !u!54 &8225503550448520815
 Rigidbody:
   m_ObjectHideFlags: 0
