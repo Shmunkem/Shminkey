@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FinishLine : MonoBehaviour
 {
+    public GameObject Player;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,7 @@ public class FinishLine : MonoBehaviour
 
     private void OnTriggerEnter(Collider PlayerRB)
     {
-        Debug.Log("Finish!");
+        Debug.Log("finished stage 1");
+        Player.transform.Translate(new Vector3(35, 1, 0));
     }
 }
