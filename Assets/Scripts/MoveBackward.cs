@@ -15,5 +15,11 @@ public class MoveBackward : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.left * Time.deltaTime * speed);
+        StartCoroutine(bulletDespawnTime());
+    }
+    IEnumerator bulletDespawnTime()
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(gameObject);
     }
 }

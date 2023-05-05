@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	private Rigidbody playerRB;
+	private GameObject SpawnPoint;
 	public float speed = 10f;
 	public float forwardinput;
 	public bool isSliding = false;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
 	    playerRB = GetComponent<Rigidbody>();
+		SpawnPoint = GameObject.Find("CheckPoint");
+		Physics.gravity *= 2;
 	}
 
 	// Update is called once per frame
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour
 		forwardinput = Input.GetAxis("Horizontal");
 		transform.Translate(new Vector3(1,0,0)*forwardinput*speed*Time.deltaTime*(1+slidespeed));
 		if (Input.GetKeyDown(KeyCode.Space) && isOnGround) {
-			playerRB.AddForce(Vector3.up*12*(1+slidespeed), ForceMode.Impulse);
+			playerRB.AddForce(Vector3.up*21*(1+slidespeed), ForceMode.Impulse);
 			isOnGround = false;
 			isSliding = false;
 		}
@@ -49,6 +52,9 @@ public class PlayerController : MonoBehaviour
 			playerRB.mass = 1.5f;
 			slidespeed = 0;
 		}
+		if (playerRB.position.y < -1f) {
+			playerRB.transform.position = SpawnPoint.transform.position;
+        }
 			if (Input.GetKeyDown(KeyCode.A))
 			{
 				LastHorizontalMove = KeyCode.A;
@@ -66,8 +72,12 @@ public class PlayerController : MonoBehaviour
 			Instantiate(BulletR, transform.position + BulletPositionR, BulletR.transform.rotation);
 		}
 	}
-	private void OnCollisionEnter(Collision collision) {
+	private void OnCollisionEnter(Collision other) {
 		isOnGround = true;
+		if (other.gameObject.CompareTag("FinishLine")) {
+			transform.Translate (new Vector3(35, 1, 0));
+			StartCoroutine (newCheckpoint());
+        }
 	}
 	IEnumerator slideTimer() {
 		yield return new WaitForSeconds(0.3f);
@@ -75,4 +85,8 @@ public class PlayerController : MonoBehaviour
 		slidingPlayer.gameObject.SetActive(false);
 		standingPlayer.gameObject.SetActive(true);
 	}
+	IEnumerator newCheckpoint() {
+		yield return new WaitForSeconds(0.1f);
+		SpawnPoint.transform.position = playerRB.position;
+    }
 }
